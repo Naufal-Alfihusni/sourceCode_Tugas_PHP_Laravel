@@ -1,11 +1,13 @@
 <?php
 $nama = '';
+$email = '';
 $nilaiInput = '';
 $hasil = null;
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nama = trim($_POST['nama'] ?? '');
+    $email = trim($_POST['email'] ?? '');
     $nilaiInput = trim($_POST['nilai'] ?? '');
 
     if ($nama === '') {
@@ -48,10 +50,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $hasil = [
             'nama' => $nama,
+            'email' => $email,
             'nilai' => $nilai,
             'grade' => $grade,
             'keterangan' => $keterangan,
-            'status' => $nilai >= 75 ? 'Lulus' : 'Belum lulus',
+            'status' => $nilai > 70 ? 'Lulus' : 'Remedial',
         ];
     }
 }
@@ -83,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         h1 {
             margin-top: 0;
-            color: #0f766e;
+            color: #06a6f0;
         }
 
         .error {
@@ -91,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         a {
-            color: #0f766e;
+            color: #06a6f0;
         }
     </style>
 </head>
@@ -107,6 +110,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php else: ?>
             <h1>Hasil Penilaian</h1>
             <p><strong>Nama:</strong> <?= htmlspecialchars($hasil['nama'], ENT_QUOTES, 'UTF-8') ?></p>
+            <p>
+                <strong>Email:</strong>
+                <?= htmlspecialchars($hasil['email'], ENT_QUOTES, 'UTF-8') ?>
+            </p>
             <p><strong>Nilai:</strong> <?= htmlspecialchars((string) $hasil['nilai'], ENT_QUOTES, 'UTF-8') ?></p>
             <p><strong>Grade:</strong> <?= htmlspecialchars($hasil['grade'], ENT_QUOTES, 'UTF-8') ?></p>
             <p><strong>Keterangan:</strong> <?= htmlspecialchars($hasil['keterangan'], ENT_QUOTES, 'UTF-8') ?></p>
