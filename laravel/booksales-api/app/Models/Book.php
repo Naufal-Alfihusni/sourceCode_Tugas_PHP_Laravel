@@ -8,6 +8,16 @@ class Book extends Model
 {
     protected $table = 'books';
 
+    protected $fillable = [
+        'title',
+        'description',
+        'price',
+        'stock',
+        'cover_photo',
+        'genre_id',
+        'author_id'
+    ];
+
     public function genre()
     {
         return $this->belongsTo(Genre::class);
