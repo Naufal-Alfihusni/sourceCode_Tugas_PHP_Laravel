@@ -55,4 +55,81 @@ class GenreController extends Controller
             'data' => $genre
         ]);
     }
+
+    public function show(string $id)
+    {
+        $genre = Genre::find($id);
+
+        if (!$genre) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Resource not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Get detail resource',
+            'data' => $genre
+        ], 200);
+    }
+
+    public function update(string $id,  Request $request)
+    {
+        $genre = Genre::find($id);
+
+        if (!$genre) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Resource not found'
+            ], 404);
+        }
+
+        // validator
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:40',
+            'description' => 'required|string'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()
+            ], 422);
+        }
+
+        //persiapan data
+        $data =  [
+            'name' => $request->name,
+            'description' =>  $request->description
+        ];
+
+        // update data
+        $genre->update($data);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Resource update successfully',
+            'data' => $genre
+        ], 200);
+    }
+
+    public function destroy(string $id)
+    {
+        $genre = Genre::find($id);
+
+        $genre->delete();
+
+        if (!$genre) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Resource not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Delete resource successfully'
+        ]);
+    }
 }
